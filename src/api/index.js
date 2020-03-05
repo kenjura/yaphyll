@@ -7,7 +7,6 @@ const api = require('./controllers');
 // const auth = require('auth-library');
 const express = require('express');
 const fallback = require('express-history-api-fallback')
-const htmlEngine = require('../helper/htmlEngine');
 const mongoose = require('mongoose');
 const path = require('path');
 
@@ -15,12 +14,6 @@ const app = express();
 const port = process.env.PORT || 3011;
 const fileRoot = process.env.STATICFILE_ROOT || path.resolve(__dirname, '../public');
 console.log({fileRoot});
-
-// boot up Mongoose
-const mongoUrl = `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DB}`
-mongoose.connect(mongoUrl)
-	.then(foo => console.log(`connected to mongo at ${mongoUrl}`))
-	.catch(err => console.error(`FAILURE: did not connect to mongo at ${mongoUrl}`, err));
 
 // general express middleware
 app.use(require('body-parser').json());

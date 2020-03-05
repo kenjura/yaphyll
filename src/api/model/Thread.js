@@ -1,4 +1,9 @@
 const mongoose = require('mongoose');
+const autoIncrement = require('mongoose-auto-increment');
+const getConnection = require('../helper/connectionHelper');
+
+const connection = getConnection();
+autoIncrement.initialize(connection);
 
 const collectionName = 'threads';
 const schemaName = 'thread';
@@ -10,8 +15,9 @@ const schema = new mongoose.Schema({
 }, {
 	timestamps: true,
 });
+schema.plugin(autoIncrement.plugin, { model:'Thread', field:'threadId' });
 
-const model = mongoose.model(schemaName, schema, collectionName);
+const model = connection.model(schemaName, schema, collectionName);
 
 module.exports = model;
 module.exports.schema = schema;

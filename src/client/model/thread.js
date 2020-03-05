@@ -1,6 +1,12 @@
 import { get, post } from '../helper/api';
 
-export { getThreads };
+export { createThread, getThreads };
+
+async function createThread(body) {
+	const url = '/api/thread';
+	const res = await post(url, body);
+	return res;
+}
 
 // async function getForum({ forumId }) {
 // 	const url = `/api/forum?forumId=${forumId}`;

@@ -1,11 +1,12 @@
 import ForumList from './ForumList';
 import React from 'react';
 import ThreadList from './ThreadList';
+import ThreadCreate from './ThreadCreate';
 
 import './ForumList.scss';
 
 import { getChildForums, getForum } from '../model/forum';
-import { getThreads } from '../model/thread';
+import { createThread, getThreads } from '../model/thread';
 
 const TempLoadingIndicator = props => <div>loading...</div>;
 
@@ -23,6 +24,10 @@ export default function Forum(props) {
 		<div className="thread-list">
 			<ThreadList threads={threads} />
 		</div>
+
+		<div className="thread-create">
+			<ThreadCreate forumId={forum.forumId} />
+		</div>
 	</div>
 }
 
@@ -34,7 +39,7 @@ export class ForumLoader extends React.Component {
 		this.state = {
 			forum: null,
 			loading: true,
-		}
+		};
 	}
 
 	componentDidMount() {

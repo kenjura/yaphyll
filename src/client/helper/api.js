@@ -17,7 +17,7 @@ async function post(url, body) {
 	    },
     	redirect: 'follow', 
     	referrerPolicy: 'no-referrer', 
-    	body: typeof(data)==='object' ? JSON.stringify(data) : data,
+    	body: typeof(body)==='object' ? JSON.stringify(body) : body,
 	}
 
 	const res = await fetch(url, options);

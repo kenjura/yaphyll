@@ -1,0 +1,33 @@
+{
+  "name": "yaphyll",
+  "version": "0.1.0",
+  "description": "",
+  "main": "src/api/index.js",
+  "scripts": {
+    "start": "DEBUG=yahpyll:* nodemon -w src/api src/api/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^7.1.0",
+    "nodemon": "^2.0.2",
+    "parcel-bundler": "^1.12.4",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "react-router-dom": "^5.1.2",
+    "sass": "^1.26.2"
+  },
+  "browserslist": [
+    "last 5 Chrome versions"
+  ],
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "crud-routes": "github:kenjura/crud-routes",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-history-api-fallback": "^2.2.1",
+    "mongoose": "^5.9.3"
+  }
+}

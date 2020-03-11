@@ -14,7 +14,7 @@ export default function Forum(props) {
 	const { forum={} } = props;
 	const { threads=[] } = forum;
 
-	return <div className="forum-detail">
+	return <div id="forum">
 		<h2>{forum.title}</h2>
 
 		<div className="child-forums-list">

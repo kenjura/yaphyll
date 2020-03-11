@@ -10,7 +10,7 @@ const TempLoadingIndicator = props => <div>loading...</div>;
 export default function ForumList(props) {
 	const { forums } = props;
 
-	return <div>
+	return <div id="forum-list">
 		ForumList:
 		{forums
 			.map(forum => <Link to={`/forum/${forum.forumId}`} key={forum.forumId}>

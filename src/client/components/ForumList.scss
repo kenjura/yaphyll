@@ -1,9 +1,15 @@
+#forum, #forum-list {
+	padding: 0 20px;
 
-.forum {
-	background-color: #666;
-	margin: 10px;
-	padding: 10px;
+	.forum {
+		background-color: #666;
+		margin: 10px;
+		padding: 10px;
+	}
+	.forum-title {
+		font-size: 125%;
+	}	
 }
-.forum-title {
-	font-size: 125%;
+
+#forum-list {
 }

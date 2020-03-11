@@ -1,8 +1,11 @@
+import NavMain from './components/NavMain';
 import React from 'react';
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { ForumListLoader } from './components/ForumList';
 import { ForumLoader } from './components/Forum';
+
+import ThreadDetailLoader from './components/ThreadDetailLoader';
 
 import './App.scss';
 // import 'antd/dist/antd.css';  // or 'antd/dist/antd.less'
@@ -19,11 +22,11 @@ const Thread = () => <h2>Thread Detail Page</h2>;
 const AppRouter = () => (
   <Router>
     <div id="router-child">
-		{/*<Route component={TopMenuLoader} />*/}
+		<Route component={NavMain} />
 
 		<Route path="/" exact component={ForumListLoader} />
 		<Route exact path="/forum/:forumId" render={props => <ForumLoader key={props.match.params.forumId} {...props} />} />
-		<Route exact path="/forum/:forumId/thread/:threadId" render={props => <Thread {...props} />} />
+		<Route exact path="/forum/:forumId/thread/:threadId" render={props => <ThreadDetailLoader {...props} />} />
       
     </div>
   </Router>

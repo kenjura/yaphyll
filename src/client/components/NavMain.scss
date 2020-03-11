@@ -1,0 +1,28 @@
+#nav-main {
+	background: #222;
+	position: sticky;
+	height: 50px;
+	top: 0;
+	width: 100vw;
+
+	header, a {
+		display: inline-block;
+		line-height: 50px;
+		margin: 0;
+		padding: 0 10px;
+		vertical-align: top;
+	}
+
+	header {
+		font-size: 150%;
+	}
+
+	a {
+		cursor: pointer;
+		transition: background-color 0.3s;
+	}
+
+	a:hover {
+		background-color: rgba(255,255,255,0.3);
+	}
+}

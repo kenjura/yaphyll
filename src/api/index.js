@@ -4,7 +4,7 @@ require('dotenv').config({ path:'/etc/yaphyll.env' });
 // require('./validate-env');
 
 const api = require('./controllers');
-// const auth = require('auth-library');
+const auth = require('./helper/addAuth');
 const express = require('express');
 const fallback = require('express-history-api-fallback')
 const mongoose = require('mongoose');
@@ -19,7 +19,7 @@ console.log({fileRoot});
 app.use(require('body-parser').json());
 
 // auth time!
-// auth(app, options);
+auth(app);
 
 // api server
 app.use('/api', api);
@@ -66,5 +66,15 @@ if (!process.env.NO_PARCEL) {
 app.use(express.static(fileRoot));
 app.use(fallback('index.html', { root:fileRoot }))
 
-app.listen(port, () => console.log(`API listening on port ${port}`));
+// set up SSL
+const https = require('https');
+const fs = require('fs');
+const key = fs.readFileSync('./localhost-key.pem');
+const cert = fs.readFileSync('./localhost.pem');
+
+// finally ready to serve
+// app.listen(port, () => console.log(`API listening on port ${port}`));
+https.createServer({key, cert}, app).listen('3011', () => {
+  console.log('Listening on https://localhost:3011');
+});
 

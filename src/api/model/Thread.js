@@ -8,7 +8,7 @@ autoIncrement.initialize(connection);
 const collectionName = 'threads';
 const schemaName = 'thread';
 const schema = new mongoose.Schema({
-	body: { type:String, required:true },
+	// body: { type:String, required:true },
 	createdBy: { type:String, required:true },
 	threadId: { type:Number, required:true },
 	forumId: { type:Number, required:true },

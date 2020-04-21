@@ -1,18 +1,24 @@
+import DateDisplay from './DateDisplay';
+import PostDetail from './PostDetail';
 import React from 'react';
 
+import './ThreadDetail.scss';
+
 export default function ThreadDetail(props) {
-	const { body, createdAt, createdBy, title } = props;
+	const { 
+		createdAt=new Date(0),
+		createdBy='?',
+		posts=[], 
+		title='unknown thread',
+	} = props;
 
 	return <div className="thread-detail">
 		<header>
 			<div className="title">{title}</div>
-			<div className="byline">{createdBy}, ${renderDate(createdAt)}</div>
+			<div className="byline">{createdBy}, <DateDisplay date={createdAt} /></div>
 		</header>
-		<div className="body">{body}</div>
+		<div className="posts">
+			{ posts.map(post => <PostDetail {...post} />) }
+		</div>
 	</div>;
-}
-
-function renderDate(date) {
-	if (!date || !(date instanceof Date)) return 'invalid date';
-	return date.toLocaleString();
 }

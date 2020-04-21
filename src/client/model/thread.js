@@ -15,9 +15,11 @@ async function createThread(body) {
 // }
 
 async function getThread({ threadId }) {
-	const url = `/api/thread?threadId=${threadId}`;
-	const thread = await get(url);
-	return thread[0];
+	// const url = `/api/thread?threadId=${threadId}`;
+	const thread = (await get(`/api/thread?threadId=${threadId}`))[0];
+	const posts = await get(`/api/post?threadId=${threadId}`);
+	const ret = Object.assign({}, thread, { posts });
+	return ret;
 }
 
 async function getThreads({ forumId }) {

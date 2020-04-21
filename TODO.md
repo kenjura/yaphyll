@@ -1,3 +1,9 @@
+# Next
++ [ ] non-shitty css
++ [ ] add post, add forum, etc
++ [ ] 
+
+# General
 + [x] Explore MVC architecture
 + [ ] Implement post list, post detail
 + [ ] Totally separate all dumb components into their own files

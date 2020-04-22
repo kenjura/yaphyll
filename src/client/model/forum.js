@@ -1,7 +1,7 @@
 import { addDepth } from '../helper/flat';
 import { get, post } from '../helper/api';
 
-export { getChildForums, getForums, getForum };
+export { getChildForums, getForums, getForum, getMetadata };
 
 async function getChildForums({ forumId }) {
 	const url = `/api/forum?parentForumId=${forumId}`;
@@ -24,4 +24,10 @@ async function getForums() {
 		parentIdField:'parentForumId',
 		replace:true,
 	});
+}
+
+async function getMetadata() {
+	const url = '/api/forum/metadata';
+	const md = await get(url);
+	return md;
 }

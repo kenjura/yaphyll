@@ -1,9 +1,25 @@
 
-.thread {
-	background-color: #448;
-	margin: 10px;
-	padding: 10px;
-}
-.thread-title {
-	font-size: 125%;
+.thread-list {
+	.thread {
+		background-color: #448;
+		margin: 10px;
+		padding: 10px;
+		position: relative;
+
+		.thread-title {
+			font-size: 150%;
+			font-weight: lighter;
+		}
+
+		.thread-byline {
+		    font-size: 80%;
+		    font-weight: lighter;
+		    line-height: 30px;
+		    position: absolute;
+		    right: 10px;
+		    top: 10px;
+		    vertical-align: middle;
+		}
+
+	}
 }

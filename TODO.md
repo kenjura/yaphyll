@@ -7,8 +7,14 @@
 + [ ] implement childForums list in forumDetail
 + [ ] switch to URLSearchParams from query-string
 
-# State Management
-+ [ ] Some day, make a withState HOC to add state to all components, so they can inherit history from react-router and do history pushes
+# Metadata
++ [ ] use aggregation pipeline to get metadata for:
+  + [x] Forum List: # of threads per forum, most recent one
+  + [ ] Thread List: # of posts per thread, most recent one
+  + [ ] find a better way to organize controllers to include metadata
+
+# Some Day
++ [ ] replace crud-routes with graphQL and Relay?
 
 # General
 + [x] Explore MVC architecture

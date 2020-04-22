@@ -18,16 +18,15 @@ const Thread = () => <h2>Thread Detail Page</h2>;
 // const DbRoot = props => <ArticleView ...Object.assign({}, props, { match: { params: { path:'_home' }}}) />
 // const DbRoot = props => <ArticleView {...props} />
 
-
 const AppRouter = () => (
   <Router>
     <div id="router-child">
 		<Route component={NavMain} />
 
 		<Route path="/" exact component={ForumListLoader} />
-		<Route exact path="/forum/:forumId" render={props => <ForumDetailLoader key={props.match.params.forumId} {...props} />} />
+		<Route exact path="/forum/:forumId" render={props => <ForumDetailLoader key={props.match.params.forumId+'-'+props.location.search } {...props} />} />
 		<Route exact path="/forum/:forumId/thread/:threadId" render={props => <ThreadDetailLoader {...props} />} />
-      
+
     </div>
   </Router>
 );

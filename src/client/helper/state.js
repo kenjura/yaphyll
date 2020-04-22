@@ -12,9 +12,17 @@ function getParameter(key) {
 	return qs[key] || DEFAULTS[key];
 }
 
+function getState() {
+	let qs = queryString.parse(location.search);
+	return qs;
+}
+
 function setParameter(key, val) {
 	let qs = queryString.parse(location.search);
 	qs[key] = val;
-	// console.log('updating search string...', queryString.stringify(qs));
-	location.search = queryString.stringify(qs);	
+
+	const search = queryString.stringify(qs);	
+	const newLocation = Object.assign({}, location, { search });
+	
+	return newLocation;
 }

@@ -3,12 +3,14 @@ import Pagination from './Pagination';
 import React from 'react';
 
 import { getParameter, setParameter } from '../helper/state';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import './ThreadList.scss';
 
 export default function ThreadList(props) {
 	const { threads } = props;
+
+	const history = useHistory();
 
 	const sortedThreads = threads
 		.map(thread => Object.assign(thread, { sortDate:new Date(thread.createdAt) }))
@@ -18,7 +20,7 @@ export default function ThreadList(props) {
 	const pageSize = parseInt(getParameter('pageSize'));
 	const pageCount = Math.ceil(threads.filterCount / pageSize);
 	const more = threads.filterCount - currentPage * pageCount;
-	const onChange = val => setParameter('page', val);
+	const onChange = val => history.push(setParameter('page', val));
 
 	return <div className="thread-list">
 	ThreadList:

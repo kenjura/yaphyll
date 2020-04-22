@@ -1,0 +1,15 @@
+div.pagination {
+	.page {
+		background: rgba(255,255,255,0.25);
+		cursor: pointer;
+		display: inline-block;
+	    padding: 5px 10px;
+	    margin-right: 10px;
+	}
+	.page:hover {
+		background: rgba(255,255,255,0.5);
+	}
+	.page[active="true"] {
+		background: rgba(200,200,255,0.35);
+	}
+}

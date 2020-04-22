@@ -1,4 +1,5 @@
 import { get, post } from '../helper/api';
+import { getParameter } from '../helper/state';
 
 export { createThread, getThread, getThreads };
 
@@ -23,7 +24,10 @@ async function getThread({ threadId }) {
 }
 
 async function getThreads({ forumId }) {
-	const url = `/api/thread?forumId=${forumId}`;
+	const page = getParameter('page');
+	const pageSize = getParameter('pageSize');
+	const offset = (page-1) * pageSize;
+	const url = `/api/thread?forumId=${forumId}&offset=${offset}`;
 	const forums = await get(url);
 	return forums;
 }

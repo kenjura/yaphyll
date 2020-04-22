@@ -3,6 +3,7 @@ export { get, post };
 async function get(url) {
 	const res = await fetch(url);
 	const json = await res.json();
+	json.filterCount = res.headers.get('x-filter-count');
 	return json;
 }
 

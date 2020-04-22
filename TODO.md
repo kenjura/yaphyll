@@ -5,6 +5,10 @@
 + [ ] parse bbCode, wikitext, etc
 + [ ] implement displayOrder (by replacing fid in pidTree)
 + [ ] implement childForums list in forumDetail
++ [ ] switch to URLSearchParams from query-string
+
+# State Management
++ [ ] Some day, make a withState HOC to add state to all components, so they can inherit history from react-router and do history pushes
 
 # General
 + [x] Explore MVC architecture

@@ -3,8 +3,8 @@ import React from 'react';
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { ForumListLoader } from './components/ForumList';
-import { ForumLoader } from './components/Forum';
 
+import ForumDetailLoader from './components/ForumDetailLoader';
 import ThreadDetailLoader from './components/ThreadDetailLoader';
 
 import './App.scss';
@@ -25,7 +25,7 @@ const AppRouter = () => (
 		<Route component={NavMain} />
 
 		<Route path="/" exact component={ForumListLoader} />
-		<Route exact path="/forum/:forumId" render={props => <ForumLoader key={props.match.params.forumId} {...props} />} />
+		<Route exact path="/forum/:forumId" render={props => <ForumDetailLoader key={props.match.params.forumId} {...props} />} />
 		<Route exact path="/forum/:forumId/thread/:threadId" render={props => <ThreadDetailLoader {...props} />} />
       
     </div>

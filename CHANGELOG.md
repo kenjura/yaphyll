@@ -1,3 +1,9 @@
+# 0.3.0
++ refactored some components (still shy of a perfect smart/dumb separation)
++ added pagination
++ added global state via useHistory hook and URLSearchParams
++ added metadata to forum list
+
 # 0.2.0
 + added mybb -> yaphyll migration bot
 + refactored model

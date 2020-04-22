@@ -1,3 +1,4 @@
+import { addDepth } from '../helper/flat';
 import { get, post } from '../helper/api';
 
 export { getChildForums, getForums, getForum };
@@ -17,5 +18,10 @@ async function getForum({ forumId }) {
 async function getForums() {
 	const url = '/api/forum';
 	const forums = await get(url);
-	return forums;
+	return addDepth({ 
+		arr:forums, 
+		idField:'forumId',
+		parentIdField:'parentForumId',
+		replace:true,
+	});
 }

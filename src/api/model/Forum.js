@@ -11,6 +11,7 @@ const schema = new mongoose.Schema({
 	createdBy: { type:String, required:true },
 	forumId: { type:Number, required:true },
 	title: { type:String, require:true },
+	displayOrder: { type:Number, required:false },
 	parentForumId: { type:Number },
 }, {
 	timestamps: true,

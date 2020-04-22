@@ -4,18 +4,20 @@ import './ForumList.scss';
 
 import { getForums } from '../model/forum';
 import { Link } from 'react-router-dom';
+import { sortByScore } from '../helper/score';
 
 const TempLoadingIndicator = props => <div>loading...</div>;
 
 export default function ForumList(props) {
 	const { forums } = props;
 
+	const sortedForums = sortByScore(forums, forum => (forum.pidTree||'').split(','))
 	return <div id="forum-list">
 		ForumList:
-		{forums
+		{sortedForums
 			.map(forum => <Link to={`/forum/${forum.forumId}`} key={forum.forumId}>
-				<div className="forum">
-					<div className="forum-title">{forum.title}</div>
+				<div className="forum" depth={forum.depth}>
+					<div className="forum-title">{forum.title} d({forum.depth}) fid({forum.forumId}) pid({forum.parentForumId}) tree({forum.pidTree})</div>
 					{/*<div className="forum-children">{forum.childForums.map(f => f.title).join(',')}</div>*/}
 				</div>
 			</Link>)

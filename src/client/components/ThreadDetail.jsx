@@ -13,12 +13,12 @@ export default function ThreadDetail(props) {
 	} = props;
 
 	return <div className="thread-detail">
-		<header>
+		<header className="thread-header">
 			<div className="title">{title}</div>
-			<div className="byline">{createdBy}, <DateDisplay date={createdAt} /></div>
+			{/*<div className="byline">{createdBy}, <DateDisplay date={createdAt} /></div>*/}
 		</header>
 		<div className="posts">
-			{ posts.map(post => <PostDetail {...post} />) }
+			{ posts.map(post => <PostDetail key={post.postId} {...post} />) }
 		</div>
 	</div>;
 }

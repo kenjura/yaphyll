@@ -20,7 +20,7 @@ export default function ThreadList(props) {
 	const pageSize = parseInt(getParameter('pageSize'));
 	const pageCount = Math.ceil(threads.filterCount / pageSize);
 	const more = threads.filterCount - currentPage * pageCount;
-	const onChange = val => history.push(setParameter('page', val));
+	const onChange = val => history.push({ search:setParameter('page', val) });
 
 	return <div className="thread-list">
 	ThreadList:

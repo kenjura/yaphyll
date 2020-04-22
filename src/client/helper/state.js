@@ -1,5 +1,3 @@
-import queryString from 'query-string';
-
 export { getParameter, setParameter };
 
 const DEFAULTS = {
@@ -8,21 +6,21 @@ const DEFAULTS = {
 }
 
 function getParameter(key) {
-	let qs = queryString.parse(location.search)	;
-	return qs[key] || DEFAULTS[key];
+	let searchParams = new URLSearchParams(location.search);
+	return searchParams.get(key) || DEFAULTS[key];
 }
 
 function getState() {
-	let qs = queryString.parse(location.search);
-	return qs;
+	let searchParams = new URLSearchParams(location.search);;
+	return searchParams;
 }
 
 function setParameter(key, val) {
-	let qs = queryString.parse(location.search);
-	qs[key] = val;
+	// changes a search param and returns the new string
+	// use history.push({ search }) from useHistory (react-router-dom) to implement location change 
 
-	const search = queryString.stringify(qs);	
-	const newLocation = Object.assign({}, location, { search });
-	
-	return newLocation;
+	let searchParams = new URLSearchParams(location.search);
+	searchParams.set(key, val);
+
+	return searchParams.toString();
 }

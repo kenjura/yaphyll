@@ -10,9 +10,9 @@ async function getChildForums({ forumId }) {
 }
 
 async function getForum({ forumId }) {
-	const url = `/api/forum?forumId=${forumId}`;
+	const url = `/api/forum/${forumId}`;
 	const forum = await get(url);
-	return forum[0];
+	return forum;
 }
 
 async function getForums() {

@@ -1,31 +1,25 @@
 // const api = require('./controllers');
 const CRUDRoutes = require('crud-routes');
 const express = require('express');
-const Forum = require('../model/Forum');
-const Post = require('../model/Post');
-const Thread = require('../model/Thread');
+const profileCtrl = require('./profileCtrl');
+const forumCtrl = require('./forumCtrl');
+const threadCtrl = require('./threadCtrl');
+const postCtrl = require('./postCtrl');
+
+const { requiresAuth } = require('express-openid-connect');
 
 const router = express.Router();
 
-router.get('/forum/metadata', getForumMetadata);
-CRUDRoutes(router, '/forum', Forum);
-CRUDRoutes(router, '/post', Post);
-CRUDRoutes(router, '/thread', Thread);
+router.get('/', (req,res) => res.send('api root'));
 
-router.use('/', (req,res) => res.send('api root'));
+router.use('/', requiresAuth());
 
-async function getForumMetadata(req, res) {
-	const md = await Thread.aggregate([
-	    { $match: { } },
-	    { $group: { _id: "$forumId", count: { $sum:1 }, latest: { $max:'$createdAt' } }}
-	]);
-	const forumMetadata = md.map(f => ({
-		forumId: f._id,
-		count: parseInt(f.count),
-		latest: f.latest,
-	}));
-	res.send(forumMetadata);
-}
+router.use(forumCtrl);
+router.use(threadCtrl);
+router.use(postCtrl);
+router.use(profileCtrl);
+
+
 
 
 module.exports = router;

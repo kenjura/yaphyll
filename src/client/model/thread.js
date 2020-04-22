@@ -17,7 +17,7 @@ async function createThread(body) {
 
 async function getThread({ threadId }) {
 	// const url = `/api/thread?threadId=${threadId}`;
-	const thread = (await get(`/api/thread?threadId=${threadId}`))[0];
+	const thread = (await get(`/api/thread/${threadId}`));
 	const posts = await get(`/api/post?threadId=${threadId}`);
 	const ret = Object.assign({}, thread, { posts });
 	return ret;

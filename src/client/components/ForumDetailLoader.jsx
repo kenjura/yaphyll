@@ -2,7 +2,7 @@ import ForumDetail from './ForumDetail';
 import React from 'react';
 
 import { getChildForums, getForum, getForums } from '../model/forum';
-import { createThread, getThreads } from '../model/thread';
+import { createThread, getThreadMetadata, getThreads } from '../model/thread';
 
 const TempLoadingIndicator = props => <div>loading...</div>;
 
@@ -23,13 +23,19 @@ export default class ForumLoader extends React.Component {
 
 	async load({ forumId }={}) {
 		this.setState({ forum:null, loading:true });
-		const [ forum, childForums, threads ] = await Promise.all([
+		const [ forum, childForums, threads, threadMetadata ] = await Promise.all([
 			getForum({ forumId }),
 			getChildForums({ forumId }),
 			getThreads({ forumId }),
+			getThreadMetadata({ forumId }),
 		]);
 		forum.childForums = childForums;
 		forum.threads = threads;
+		forum.threads.forEach(thread => {
+			const { count=0, latest=null } = threadMetadata.find(t => t.threadId === thread.threadId) || {};
+			thread.count = count;
+			thread.latest = latest;
+		})
 		this.setState({ forum, loading:false });
 	}
 

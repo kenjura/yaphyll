@@ -24,7 +24,9 @@ export default function ThreadList(props) {
 
 	return <div className="thread-list">
 	ThreadList:
-		{ sortedThreads.map(ThreadLink) }
+		<div className="table table-style-1">
+			{ sortedThreads.map(ThreadLink) }
+		</div>
 		<Pagination 
 			currentPage={currentPage} 
 			pageCount={pageCount} 

@@ -1,7 +1,7 @@
 import { get, post } from '../helper/api';
 import { getParameter } from '../helper/state';
 
-export { createThread, getThread, getThreads };
+export { createThread, getThreadMetadata, getThread, getThreads };
 
 async function createThread(body) {
 	const url = '/api/thread';
@@ -30,4 +30,10 @@ async function getThreads({ forumId }) {
 	const url = `/api/thread?forumId=${forumId}&offset=${offset}&sort=-createdAt`;
 	const forums = await get(url);
 	return forums;
+}
+
+async function getThreadMetadata({ forumId }) {
+	const url = `/api/thread/metadata?forumId=${forumId}`;
+	const md = await get(url);
+	return md;
 }

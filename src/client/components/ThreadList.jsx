@@ -1,3 +1,4 @@
+import Avatar from './Avatar';
 import DateDisplay from './DateDisplay';
 import Pagination from './Pagination';
 import React from 'react';
@@ -36,12 +37,17 @@ export default function ThreadList(props) {
 }
 
 function ThreadLink(props) {
-	const { createdBy, createdAt, title, forumId, threadId } = props;
+	const { createdBy, createdAt, title, forumId, threadId, count, latest } = props;
 
-	return <div className="thread" key={threadId}>
-		<Link to={`/forum/${forumId}/thread/${threadId}`}>
-			<div className="thread-title">{title}</div>
-			<div className="thread-byline">{createdBy}, <DateDisplay date={createdAt} /></div>
-		</Link>
-	</div>
+	return <div className="thread-row row" key={threadId}>
+			<div className="cell">
+				<Avatar username={createdBy} />
+			</div>
+			<div className="cell major">
+				<Link to={`/forum/${forumId}/thread/${threadId}`}>{title}</Link>
+			</div>
+			<div className="cell minor">{createdBy}</div>
+			<div className="cell minor"><DateDisplay date={createdAt} /></div>
+			<div className="cell minor">{count} posts</div>
+		</div>
 }

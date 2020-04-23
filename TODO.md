@@ -1,11 +1,29 @@
-# Next
+# SQL
++ [ ] genericize CRUD controller code, perhaps
++ [ ] genericize CRUD model operations, perhaps
++ [ ] argHelper
+  + [ ] rename argHelper and its exports to something more meaningful
+  + [ ] turn argHelper into a full query builder
+  + [ ] fix IN() use case (it doesn't work)
+  + [ ] implement projection
+  + [ ] full text?
++ [ ] enable metadata!!!
++ [ ] remove unnecessary dependencies
+
+# Style
 + [ ] non-shitty css
 + [ ] add post, add forum, etc
-+ [x] fix crudroutes to support id searches using fields other than _id
 + [ ] parse bbCode, wikitext, etc
 + [ ] implement displayOrder (by replacing fid in pidTree)
-+ [ ] implement childForums list in forumDetail
++ [x] implement childForums list in forumDetail
+
+# Code Quality
 + [x] switch to URLSearchParams from query-string
++ [ ] cache getUser
++ [ ] Totally separate all dumb components into their own files
++ [ ] tests for dumb components! lol
++ [ ] prop-types for dumb components. not so lol
++ [ ] move sections of express startup script into helpers? (e.g. https) or at least functions
 
 # Consider
 + [ ] Moving all metadata to its own controller? is any of it securely in the context of either forum, thread, or post?
@@ -19,11 +37,3 @@
 
 # Some Day
 + [ ] replace crud-routes with graphQL and Relay?
-
-# General
-+ [x] Explore MVC architecture
-+ [x] Implement post list, post detail
-+ [ ] Totally separate all dumb components into their own files
-+ [ ] tests for dumb components! lol
-+ [ ] prop-types for dumb components. not so lol
-+ [ ] move sections of express startup script into helpers? (e.g. https) or at least functions

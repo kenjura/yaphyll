@@ -15,7 +15,7 @@
     "mocha": "^7.1.0",
     "nodemon": "^2.0.2",
     "parcel-bundler": "^1.12.4",
-    "react": "^16.13.0",
+    "react": "^16.13.1",
     "react-dom": "^16.13.0",
     "react-router-dom": "^5.1.2",
     "sass": "^1.26.2"
@@ -25,13 +25,11 @@
   ],
   "dependencies": {
     "body-parser": "^1.19.0",
-    "crud-routes": "github:kenjura/crud-routes#0.3.0",
+    "debug": "^4.1.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-history-api-fallback": "^2.2.1",
     "express-openid-connect": "^0.6.0",
-    "mongoose": "^5.9.3",
-    "mongoose-auto-increment": "^5.0.1",
-    "mysql": "^2.18.1"
+    "mysql2": "^2.1.0"
   }
 }

@@ -1,25 +1,67 @@
-const mongoose = require('mongoose');
-const autoIncrement = require('mongoose-auto-increment');
-const getConnection = require('../helper/connectionHelper');
+const { getArgs } = require('../helper/argHelper');
+const { getConnection } = require('../helper/sqlConnection');
 
-const connection = getConnection();
-autoIncrement.initialize(connection);
+module.exports = { createTable, dropTable, create, find, findOne, remove, update };
 
-const collectionName = 'forums';
-const schemaName = 'forum';
-const schema = new mongoose.Schema({
-	createdBy: { type:String, required:true },
-	forumId: { type:Number, required:true },
-	title: { type:String, require:true },
-	displayOrder: { type:Number, required:false },
-	parentForumId: { type:Number },
-}, {
-	timestamps: true,
-});
-schema.plugin(autoIncrement.plugin, { model:'Forum', field:'forumId' });
+async function createTable({ drop=false }={}) {
+	const connection = await getConnection();
+	const sql = `
+		CREATE TABLE forums(
+			forumId int auto_increment primary key,
+			createdBy varchar(255) not null,
+			title varchar(255) not null,
+			displayOrder int,
+			parentForumId int,
+    		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    		FOREIGN KEY (createdBy)
+    			REFERENCES users (username)
+		);
+	`;
+	const result = await connection.execute(sql);
+	return result;
+}
+async function dropTable({ confirm }={}) {
+	if (confirm !== 'forums') throw new Error('Forum > dropTable > to call this function, you must pass a confirmation string.');
+	const connection = await getConnection();
+	return await connection.execute('DROP TABLE IF EXISTS forums;');
+}
 
+async function create({ createdBy, title, displayOrder, parentForumId }={}) {
+	if (!createdBy) throw new Error('Forum > create > required field createdBy is not present');
+	if (!title) throw new Error('Forum > create > required field title is not present');
+	const connection = await getConnection();
+	const sql = `
+		INSERT INTO forums(createdBy, title, displayOrder, parentForumId)
+		VALUES(?, ?, ?, ?);
+	`;
+	const values = [ createdBy, title, displayOrder, parentForumId ];
+	const result = await connection.execute(sql, values);
+	return result;
+}
 
-const model = connection.model(schemaName, schema, collectionName);
+async function find(query={}) {
+	console.warn('Forum > find > not fully implemented!');
+	const connection = await getConnection();
+	const args = getArgs(query);
+	const sql = `
+		SELECT * FROM forums
+		${args.sql};
+	`;
+	const values = args.val;
+	console.log({ sql, values });
+	const [ rows, fields ] = await connection.execute(sql, values);
+	return rows;
+}
+async function findOne(query={}) {
+	const rows = await find(query);
+	if (!rows || !Array.isArray(rows)) throw new Error('Forum > findOne > output not in expected format!');
+	return rows[0];
+}
 
-module.exports = model;
-module.exports.schema = schema;
+async function remove() {
+	console.warn('Forum > remove > not implemented!');
+}
+
+async function update() {
+	console.warn('Forum > update > not implemented!');
+}

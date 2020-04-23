@@ -1,5 +1,4 @@
 // const api = require('./controllers');
-const CRUDRoutes = require('crud-routes');
 const express = require('express');
 const profileCtrl = require('./profileCtrl');
 const forumCtrl = require('./forumCtrl');
@@ -14,9 +13,9 @@ router.get('/', (req,res) => res.send('api root'));
 
 router.use('/', requiresAuth());
 
-router.use(forumCtrl);
-router.use(threadCtrl);
-router.use(postCtrl);
+router.use('/forum', forumCtrl);
+router.use('/thread', threadCtrl);
+router.use('/post', postCtrl);
 router.use(profileCtrl);
 
 

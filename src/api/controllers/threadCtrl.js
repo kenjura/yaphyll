@@ -1,16 +1,26 @@
-const CRUDRoutes = require('crud-routes');
 const express = require('express');
 const Post = require('../model/Post');
 const Thread = require('../model/Thread');
 
 const router = express.Router();
 
-router.get('/thread/metadata', getThreadMetadata);
+router.get('/metadata', getThreadMetadata);
 
-CRUDRoutes(router, '/thread', Thread, { idField:'threadId' });
+router.get('/', async (req, res) => {
+	const args = req.query;
+	const threads = await Thread.find(args);
+	res.send(threads);
+});
+router.get('/:threadId', async (req, res) => {
+	const args = { threadId:req.params.threadId };
+	const thread = await Thread.findOne(args)
+	res.send(thread);
+});
 
 
 async function getThreadMetadata(req, res) {
+	console.warn('forum metadata disabled!');
+	return res.send([]);
 	const { forumId } = req.query;
 	if (!forumId) return res.status(400).send('forumId is required');
 

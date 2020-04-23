@@ -1,3 +1,6 @@
+# 0.4.0
++ switched from mongo / mongoose to mysql / mysql2
+
 # 0.3.0
 + refactored some components (still shy of a perfect smart/dumb separation)
 + added pagination

@@ -7,7 +7,6 @@ const api = require('./controllers');
 const auth = require('./helper/addAuth');
 const express = require('express');
 const fallback = require('express-history-api-fallback')
-const mongoose = require('mongoose');
 const path = require('path');
 
 const app = express();

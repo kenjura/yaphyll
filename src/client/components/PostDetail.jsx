@@ -24,6 +24,8 @@ function PostBody({ body }={}) {
 	html = html.replace(/\[\/b\]/g, '</strong>');
 	html = html.replace(/\[size=large\]/g, '<span style="font-size: 125%;">');
 	html = html.replace(/\[\/size\]/g, '</span>');
+	html = html.replace(/\[url\](.*?)\[\/url\]/g, '<a href="$1">$1</a>');
+	html = html.replace(/\[url=(.*?)\](.*?)\[\/url\]/g, '<a href="$1">$2</a>');
 
 	return <span dangerouslySetInnerHTML={{ __html:html }} />;
 }

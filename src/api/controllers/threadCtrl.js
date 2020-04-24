@@ -7,8 +7,9 @@ const router = express.Router();
 router.get('/metadata', getThreadMetadata);
 
 router.get('/', async (req, res) => {
-	const args = req.query;
-	const threads = await Thread.find(args);
+	const { query } = req;
+	const threads = await Thread.find({ query });
+	res.setHeader('x-filter-count', threads.filterCount);
 	res.send(threads);
 });
 router.get('/:threadId', async (req, res) => {

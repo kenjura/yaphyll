@@ -1,4 +1,6 @@
 // require('dotenv').config({ path:'/etc/yaphyll.env' });
+console.warn('you should probably use db-setup.js');
+process.exit();
 
 process.env.MYSQL_HOST = '127.0.0.1'
 process.env.MYSQL_PORT = '33307'

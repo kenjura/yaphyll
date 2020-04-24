@@ -27,7 +27,7 @@ async function getThreads({ forumId }) {
 	const page = getParameter('page');
 	const pageSize = getParameter('pageSize');
 	const offset = (page-1) * pageSize;
-	const url = `/api/thread?forumId=${forumId}${offset?`&offset=${offset}`:''}&sort=-createdAt`;
+	const url = `/api/thread?forumId=${forumId}&limit=50${offset?`&offset=${offset}`:''}&sort=-createdAt`;
 	const forums = await get(url);
 	return forums;
 }

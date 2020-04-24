@@ -13,7 +13,7 @@ export default function PostDetail(props) {
 }
 
 
-function PostBody({ body }={}) {
+function PostBody({ body='' }={}) {
 	let html = body;
 
 	// general

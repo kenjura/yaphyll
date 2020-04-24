@@ -1,25 +1,22 @@
-# Immediate
-+ [ ] finish sql merge
-  + [ ] restore pagination (e.g. x-filter-count)
-  + [ ] there needs to be an option in model.createMany to not include primary key
-
 # Bugs
 + [ ] Invalid date in threadlink
 + [ ] restore requiresAuth to api calls (or just use an /api vs /api/public schema)
++ [ ] sort doesn't work (crud/queryBuilder) (blame prepared statements)
 
 # SQL
 + [ ] use connection pooling
 + [ ] genericize CRUD controller code, perhaps
-+ [ ] genericize CRUD model operations, perhaps
-+ [ ] argHelper
-  + [ ] rename argHelper and its exports to something more meaningful
-  + [ ] turn argHelper into a full query builder
++ [ ] CRUD model code:
+  + [ ] insert() should validate fields (at least required ones)
++ [ ] queryBuilder
+  + [x] rename argHelper and its exports to something more meaningful
+  + [x] turn argHelper into a full query builder
   + [ ] fix IN() use case (it doesn't work)
-  + [ ] implement projection
+  + [x] implement projection
   + [ ] full text?
-+ [ ] enable metadata!!!
++ [x] enable metadata!!!
 + [ ] remove unnecessary dependencies
-+ [ ] consider renaming "create" to "insert" (createMany -> insertMany)
++ [x] consider renaming "create" to "insert" (createMany -> insertMany)
 
 # Style
 + [ ] non-shitty css

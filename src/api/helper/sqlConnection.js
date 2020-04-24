@@ -18,6 +18,7 @@ async function getConnection({
 	user=process.env.MYSQL_USER,
 	password=process.env.MYSQL_PASS,
 	database=process.env.MYSQL_DB,
+	multipleStatements=false,
 }={}) {
 	const key = JSON.stringify({ host, port, user, database });
 	if (connection[key]) return connection[key]; // TODO: implement connection pooling
@@ -28,6 +29,7 @@ async function getConnection({
 		user,
 		password,
 		database,
+		multipleStatements,
 	});
 	return connection[key];
 }

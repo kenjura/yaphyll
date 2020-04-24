@@ -8,14 +8,15 @@ const router = express.Router();
 
 
 router.get('/', async (req, res) => {
-	const args = req.query;
-	const forums = await Forum.find(args);
+	const { query } = req;
+	const forums = await Forum.find({ query });
+	res.setHeader('x-filter-count', forums.filterCount);
 	res.send(forums);
 });
 router.get('/metadata', getForumMetadata);
 router.get('/:forumId', async (req, res) => {
-	const args = { forumId:req.params.forumId };
-	const forum = await Forum.findOne(args)
+	const query = { forumId:req.params.forumId };
+	const forum = await Forum.findOne({ query })
 	res.send(forum);
 });
 

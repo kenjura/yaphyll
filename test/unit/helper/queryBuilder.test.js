@@ -87,8 +87,8 @@ describe('queryBuilder', () => {
 		it('should parse sort=foo correctly', () => {
 			const query = { sort:'foo' };
 			const expected = {
-				sql: 'ORDER BY ?',
-				val: ['foo ASC']
+				sql: 'ORDER BY `foo` ASC',
+				val: []
 			}
 			const actual = getOrderBy({ query });
 			assert.deepStrictEqual(actual, expected);
@@ -96,12 +96,21 @@ describe('queryBuilder', () => {
 		it('should parse sort=-foo,bar correctly', () => {
 			const query = { sort:'-foo,bar' };
 			const expected = {
-				sql: 'ORDER BY ?',
-				val: ['foo DESC, bar ASC']
+				sql: 'ORDER BY `foo` DESC, `bar` ASC',
+				val: []
 			}
 			const actual = getOrderBy({ query });
 			assert.deepStrictEqual(actual, expected);
-		})
+		});
+		it('should handle SQL injection correctly', () => {
+			const query = { sort:"foo`;DROP TABLE stuff;--" };
+			const expected = {
+				sql: '',
+				val: []
+			};
+			const actual = getOrderBy({ query });
+			assert.deepStrictEqual(actual, expected);
+		});
 	})
 	describe('getLimit', () => {
 		it('should handle default case', () => {
@@ -149,8 +158,8 @@ describe('queryBuilder', () => {
 		it('should parse foo=1,sort=foo correctly', () => {
 			const query = { foo:'1', sort:'foo' };
 			const expected = {
-				sql: 'SELECT *\nFROM stuff\nWHERE foo = ?\nORDER BY ?',
-				val: ['1', 'foo ASC']
+				sql: 'SELECT *\nFROM stuff\nWHERE foo = ?\nORDER BY `foo` ASC',
+				val: ['1']
 			}
 			const actual = buildQuery({ query, schema });
 			assert.deepStrictEqual(actual, expected);
@@ -158,8 +167,8 @@ describe('queryBuilder', () => {
 		it('should parse foo=1,sort=-foo,limit=50,offset=100 correctly', () => {
 			const query = { foo:'1', sort:'-foo', limit:'50', offset:'100' };
 			const expected = {
-				sql: 'SELECT *\nFROM stuff\nWHERE foo = ?\nORDER BY ?\nLIMIT ?\nOFFSET ?',
-				val: ['1', 'foo DESC', '50', '100']
+				sql: 'SELECT *\nFROM stuff\nWHERE foo = ?\nORDER BY `foo` DESC\nLIMIT ?\nOFFSET ?',
+				val: ['1', '50', '100']
 			}
 			const actual = buildQuery({ query, schema });
 			assert.deepStrictEqual(actual, expected);

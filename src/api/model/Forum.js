@@ -1,6 +1,3 @@
-const { getArgs } = require('../helper/argHelper');
-const { getConnection } = require('../helper/sqlConnection');
-
 const crud = require('../helper/crud');
 
 module.exports = { createTable, dropTable,  find, findOne, insert, remove, update };

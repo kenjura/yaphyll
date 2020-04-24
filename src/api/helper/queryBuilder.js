@@ -72,18 +72,24 @@ function getOrderBy({ query={} }={}) {
 		val: [],
 	}
 
-	const val = query.sort
+	// const val = query.sort
+	const sorters = query.sort
         .split(',')
         .filter(Boolean)
         .map(field => {
+        	if (field.includes("`")) {
+        		console.warn('queryBuilder > getOrderBy > found a backtick in a sort clause. Nope.');
+        		return '';
+        	}
             const dir = field.substr(0,1) === '-' ? 'DESC' : 'ASC';
             const fieldName = field.replace(/^[-+]/, '');
-            return `${fieldName} ${dir}`;
+            return `\`${fieldName}\` ${dir}`;
         })
         .join(', ');
-    const sql = val.length ? 'ORDER BY ?' : '';
+    // const sql = val.length ? 'ORDER BY ?' : '';
+    const sql = sorters.length ? `ORDER BY ${sorters}` : '';
 
-    return { sql, val:[val] };
+    return { sql, val:[] };
 }
 function getLimit({ query={} }={}) {
 	if (!query.limit) return {

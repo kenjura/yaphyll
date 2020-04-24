@@ -21,6 +21,7 @@ async function getConnection({
 }={}) {
 	const key = JSON.stringify({ host, port, user, database });
 	if (connection[key]) return connection[key]; // TODO: implement connection pooling
+	console.log('creating connection for:', { host, port, user, database });
 	connection[key] = await mysql.createConnection({
 		host,
 		port,

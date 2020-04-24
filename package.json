@@ -6,7 +6,9 @@
   "scripts": {
     "start": "DEBUG=yahpyll:* nodemon -w src/api src/api/index.js",
     "start:api": "DEBUG=yahpyll:* NO_PARCEL=true nodemon -w src/api src/api/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:int": "mocha --require test/int/shared/setup-test-db.js --exit test/int/**/*.test.js",
+    "test:unit": "mocha --exit test/unit/**/*.test.js"
   },
   "author": "",
   "license": "ISC",

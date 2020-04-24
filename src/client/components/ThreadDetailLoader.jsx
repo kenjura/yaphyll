@@ -2,6 +2,7 @@ import LoadingIndicator from './LoadingIndicator';
 import React from 'react';
 import ThreadDetail from './ThreadDetail';
 
+import { getForum } from '../model/forum';
 import { getThread } from '../model/thread';
 
 export default class ThreadDetailLoader extends React.Component {
@@ -9,26 +10,26 @@ export default class ThreadDetailLoader extends React.Component {
 		super(props);
 
 		this.state = {
-			loading: false,
+			loading: true,
 			thread: {},
 		}
 	}
 
 	componentDidMount() {
-		const { threadId } = this.props.match.params;
-		this.load({ threadId });
+		const { forumId, threadId } = this.props.match.params;
+		this.load({ forumId, threadId });
 	}
 
-	async load({ threadId }) {
-		this.setState({ thread:{}, loading: true });
-		const thread = await getThread({ threadId });
-		this.setState({ thread, loading:false });
+	async load({ forumId, threadId }) {
+		this.setState({ forum:{}, thread:{}, loading: true });
+		const [ forum, thread ] = await Promise.all([ getForum({ forumId }), getThread({ threadId }) ]);
+		this.setState({ forum, thread, loading:false });
 	}
 
 	render() {
-		const { thread, loading } = this.state;
+		const { forum, thread, loading } = this.state;
 
 		if (loading) return <LoadingIndicator />;
-		else return <ThreadDetail {...thread} />
+		else return <ThreadDetail forum={forum} thread={thread} />
 	}
 }

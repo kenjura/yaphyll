@@ -3,7 +3,7 @@ const debug = require('debug')('yaphyll:Post');
 const { getArgs } = require('../helper/argHelper');
 const { getConnection } = require('../helper/sqlConnection');
 
-module.exports = { createTable, dropTable, create, find, findOne, remove, update };
+module.exports = { createTable, dropTable, create, createMany, find, findOne, remove, update };
 
 async function createTable({ drop=false }={}) {
 	const connection = await getConnection();
@@ -14,7 +14,7 @@ async function createTable({ drop=false }={}) {
 			threadId int not null,
 			createdBy varchar(255) not null,
 			body text,
-    		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    		createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 			FOREIGN KEY (threadId)
 				REFERENCES threads (threadId),
     		FOREIGN KEY (createdBy)
@@ -42,6 +42,17 @@ async function create({ threadId, createdBy, body }={}) {
 	const values = [ threadId, createdBy, body ];
 	const result = await connection.execute(sql, values);
 	return result;
+}
+
+async function createMany(rows) {
+	console.warn('Post > createMany > not currently validating input. Good luck!');
+	const connection = await getConnection();
+	const sql = `INSERT INTO posts(postId, threadId, createdBy, body, createdAt) VALUES ?`;
+	const values = rows.map(row => [
+		row.postId, row.threadId, row.createdBy, row.body, row.createdAt
+	]);
+	const result = await connection.query(sql, [values]);
+	return result[0].affectedRows;
 }
 
 async function find(query={}) {

@@ -27,7 +27,7 @@ async function getForums() {
 }
 
 async function getMetadata() {
-	const url = '/api/forum/metadata';
+	const url = '/api/metadata/threads-per-forum';
 	const md = await get(url);
 	return md;
 }

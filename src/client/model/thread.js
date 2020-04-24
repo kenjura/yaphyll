@@ -33,7 +33,7 @@ async function getThreads({ forumId }) {
 }
 
 async function getThreadMetadata({ forumId }) {
-	const url = `/api/thread/metadata?forumId=${forumId}`;
+	const url = `/api/metadata/posts-per-thread/${forumId}`;
 	const md = await get(url);
 	return md;
 }

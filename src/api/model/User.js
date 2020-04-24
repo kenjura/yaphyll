@@ -1,6 +1,6 @@
 const { getConnection } = require('../helper/sqlConnection');
 
-module.exports = { createTable, dropTable, create, find, remove, update };
+module.exports = { createTable, dropTable, create, createMany, find, remove, update };
 
 async function createTable({ drop=false }={}) {
 	const connection = await getConnection();
@@ -8,7 +8,7 @@ async function createTable({ drop=false }={}) {
 		CREATE TABLE users(
 			username varchar(255) primary key,
 			email varchar(255) not null,
-    		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    		createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 		);
 	`;
 	const result = await connection.execute(sql);
@@ -31,6 +31,18 @@ async function create({ username, email }={}) {
 	const values = [ username, email ];
 	const result = await connection.execute(sql, values);
 	return result;
+}
+
+async function createMany(rows) {
+	console.warn('User > createMany > not currently validating input. Good luck!');
+	const connection = await getConnection();
+	const sql = `INSERT INTO users(username, email, createdAt) VALUES ?`;
+	const values = rows.map(row => [
+		row.username, row.email, row.createdAt
+	]);
+	console.log(values);
+	const result = await connection.query(sql, [values]);
+	return result[0].affectedRows;
 }
 
 async function find({ username }={}) {

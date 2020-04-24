@@ -1,4 +1,14 @@
+# Immediate
++ [ ] finish sql merge
+  + [ ] restore pagination (e.g. x-filter-count)
+  + [ ] there needs to be an option in model.createMany to not include primary key
+
+# Bugs
++ [ ] Invalid date in threadlink
++ [ ] restore requiresAuth to api calls (or just use an /api vs /api/public schema)
+
 # SQL
++ [ ] use connection pooling
 + [ ] genericize CRUD controller code, perhaps
 + [ ] genericize CRUD model operations, perhaps
 + [ ] argHelper
@@ -9,6 +19,7 @@
   + [ ] full text?
 + [ ] enable metadata!!!
 + [ ] remove unnecessary dependencies
++ [ ] consider renaming "create" to "insert" (createMany -> insertMany)
 
 # Style
 + [ ] non-shitty css

@@ -1,63 +1,90 @@
 require('dotenv').config({ path:'/etc/yaphyll.env' });
 
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const Forum = require('../api/model/Forum');
 const Post = require('../api/model/Post');
 const Thread = require('../api/model/Thread');
+const User = require('../api/model/User');
 
+const { getConnection } = require('../api/helper/sqlConnection');
 
 // MYSQL connection info
-const MYSQL_HOST = '127.0.0.1'
-const MYSQL_PORT = 33306;
-const MYSQL_USER = 'dev'
-const MYSQL_PASS = 'dev'
-const MYSQL_DB = 'dev'
+const SOURCE_HOST = '127.0.0.1'
+const SOURCE_PORT = 33306;
+const SOURCE_USER = 'dev'
+const SOURCE_PASS = 'dev'
+const SOURCE_DB = 'dev'
+
+let sourceConnection;
 
 start();
 
 async function start() {
+  await getSourceConnection();
+
   if (process.argv.includes('--removeAll') || process.argv.includes('--removeOnly')) {
-    const forums = await Forum.deleteMany({}).exec();
-    const threads = await Thread.deleteMany({}).exec();
-    const posts = await Post.deleteMany({}).exec();
-    console.log(`removed ${forums.deletedCount} forums, ${threads.deletedCount} threads, and ${posts.deletedCount} posts.`);
+    await Post.dropTable({ confirm:'posts' });
+    await Thread.dropTable({ confirm:'threads' });
+    await Forum.dropTable({ confirm:'forums' });
+    await User.dropTable({ confirm:'users' });
+    console.log('dropped dest tables');
+    await User.createTable();
+    await Forum.createTable();
+    await Thread.createTable();
+    await Post.createTable();
+    console.log('recreated dest tables');
     if (process.argv.includes('--removeOnly')) process.exit();
   }
 
-	const mysqlForums = await getForumsFromMyBB();
-  const mongoForums = convertForumsToMongo(mysqlForums);
-  console.log(`found ${mongoForums.length} forums`);
+  const sourceUsers = await getUsersFromSource();
+  const destUsers = convertUsers(sourceUsers);
+  console.log(`found ${sourceUsers.length} users`);
 
-  const mysqlThreads = await getThreadsFromMyBB();
-  const mongoThreads = convertThreadsToMongo(mysqlThreads);
-  console.log(`found ${mongoThreads.length} threads`);
+	const sourceForums = await getForumsFromSource();
+  const destForums = convertForums(sourceForums);
+  console.log(`found ${sourceForums.length} forums`);
 
-  const mysqlPosts = await getPostsFromMyBB();
-  const mongoPosts = convertPostsToMongo(mysqlPosts);
-  console.log(`found ${mongoPosts.length} posts`);
+  const sourceThreads = await getThreadsFromSource();
+  const destThreads = convertThreads(sourceThreads);
+  console.log(`found ${sourceThreads.length} threads`);
+
+  const sourcePosts = await getPostsFromSource();
+  const destPosts = convertPosts(sourcePosts);
+  console.log(`found ${sourcePosts.length} posts`);
 
   if (process.argv.includes('--dry')) {
-    console.log({ mongoForums, mongoThreads, mongoPosts });
+    console.log({ destForums, destThreads, destPosts });
     process.exit();
   }
   // console.log(mongoPosts);
 
-  const insertedForums = await Forum.insertMany(mongoForums, { rawResult:false });
-  console.log(`inserted ${insertedForums.length} forums`);
+  const insertedUsers = await User.createMany(destUsers);
+  console.log(`inserted ${insertedUsers} users`);
 
-  const insertedThreads = await Thread.insertMany(mongoThreads, { rawResult:false });
-  console.log(`inserted ${insertedThreads.length} threads`);
+  const insertedForums = await Forum.createMany(destForums);
+  console.log(`inserted ${insertedForums} forums`);
 
-  const insertedPosts = await Post.insertMany(mongoPosts, { rawResult:false });
-  console.log(`inserted ${insertedPosts.length} posts`);
+  const insertedThreads = await Thread.createMany(destThreads);
+  console.log(`inserted ${insertedThreads} threads`);
+
+  const insertedPosts = await Post.createMany(destPosts);
+  console.log(`inserted ${insertedPosts} posts`);
 
   console.log('done!');
   process.exit();
 }
 
 /*
+## User
+dest field    | mysql col
+------------- | ---------
+username      | username
+email         | email
+createdAt     | regdate * 1000
+
+
 ## Forum
-mongo field   | mysql col
+dest field    | mysql col
 ------------- | ---------
 createdBy     |
 forumId       | fid
@@ -66,7 +93,7 @@ parentForumId | pid
 displayOrder  | disporder
 
 ## Thread
-mongo field   | mysql col
+dest field    | mysql col
 ------------- | ---------
 createdBy     | username
 threadId      | tid
@@ -75,7 +102,7 @@ forumId       | fid
 createdAt     | dateline
 
 ## Post
-mongo field   | mysql col
+dest field    | mysql col
 ------------- | ---------
 createdBy     | username
 postId        | pid
@@ -84,12 +111,27 @@ body          | message
 createdAt     | dateline
 */
 
-async function getForumsFromMyBB() {
-    const query = `SELECT * FROM mybb_forums ORDER BY parentlist, disporder`;
-    return await executeMysqlQuery(query);
+async function getUsersFromSource() {
+    const query = `SELECT * FROM mybb_users`;
+    const [ rows, fields ] = await sourceConnection.execute(query);
+    return rows;
 }
 
-function convertForumsToMongo(forums) {
+function convertUsers(users) {
+  return users.map(user => ({
+    username: user.username,
+    email: user.email,
+    createdAt: new Date(user.regdate*1000),
+  }));
+}
+
+async function getForumsFromSource() {
+    const query = `SELECT * FROM mybb_forums`;
+    const [ rows, fields ] = await sourceConnection.execute(query);
+    return rows;
+}
+
+function convertForums(forums) {
   return forums.map(forum => ({
     createdBy: 'system',
     forumId: forum.fid,
@@ -99,12 +141,13 @@ function convertForumsToMongo(forums) {
   })).sort((a,b) => a.forumId - b.forumId);
 }
 
-async function getThreadsFromMyBB() {
+async function getThreadsFromSource() {
     const query = `SELECT * FROM mybb_threads`;
-    return await executeMysqlQuery(query);
+    const [ rows, fields ] = await sourceConnection.execute(query);
+    return rows;
 }
 
-function convertThreadsToMongo(threads) {
+function convertThreads(threads) {
   return threads.map(thread => ({
     createdBy: thread.username,
     threadId: thread.tid,
@@ -114,12 +157,13 @@ function convertThreadsToMongo(threads) {
   }));
 }
 
-async function getPostsFromMyBB() {
+async function getPostsFromSource() {
     const query = `SELECT * FROM mybb_posts`;
-    return await executeMysqlQuery(query);
+    const [ rows, fields ] = await sourceConnection.execute(query);
+    return rows;
 }
 
-function convertPostsToMongo(posts) {
+function convertPosts(posts) {
   return posts.map(post => ({
     createdBy: post.username,
     postId: post.pid,
@@ -129,27 +173,13 @@ function convertPostsToMongo(posts) {
   }));
 }
 
-
-function executeMysqlQuery(query) {
-  return new Promise((resolve, reject) => {
-    const connection = mysql.createConnection({
-      host: MYSQL_HOST,
-      user: MYSQL_USER,
-      password: MYSQL_PASS,
-      database: MYSQL_DB,
-      port: MYSQL_PORT,
-      flags: 'PLUGIN_AUTH',
-    });
-
-    connection.connect();
-
-    console.log('sending query...', query);
-
-    connection.query(query, (err, data, fields) => {
-      if (err) reject(err);
-      resolve(data);
-    });
-
-    connection.end();
+async function getSourceConnection() {
+  sourceConnection = await getConnection({
+    host: SOURCE_HOST,
+    port: SOURCE_PORT,
+    user: SOURCE_USER,
+    password: SOURCE_PASS,
+    database: SOURCE_DB,
   });
 }
+

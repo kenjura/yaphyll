@@ -1,7 +1,7 @@
 const { getArgs } = require('../helper/argHelper');
 const { getConnection } = require('../helper/sqlConnection');
 
-module.exports = { createTable, dropTable, create, find, findOne, remove, update };
+module.exports = { createTable, dropTable, create, createMany, find, findOne, remove, update };
 
 async function createTable({ drop=false }={}) {
 	const connection = await getConnection();
@@ -11,7 +11,7 @@ async function createTable({ drop=false }={}) {
 			forumId int not null,
 			createdBy varchar(255) not null,
 			title varchar(255) not null,
-    		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    		createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 			foreign key (forumId)
 				references forums (forumId),
     		FOREIGN KEY (createdBy)
@@ -39,6 +39,17 @@ async function create({ forumId, createdBy, title }={}) {
 	const values = [ forumId, createdBy, title ];
 	const result = await connection.execute(sql, values);
 	return result;
+}
+
+async function createMany(rows) {
+	console.warn('Thread > createMany > not currently validating input. Good luck!');
+	const connection = await getConnection();
+	const sql = `INSERT INTO threads(threadId, forumId, createdBy, title, createdAt) VALUES ?`;
+	const values = rows.map(row => [
+		row.threadId, row.forumId, row.createdBy, row.title, row.createdAt
+	]);
+	const result = await connection.query(sql, [values]);
+	return result[0].affectedRows;
 }
 async function find(query={}) {
 	console.warn('Thread > find > not fully implemented!');

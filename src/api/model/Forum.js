@@ -1,7 +1,7 @@
 const { getArgs } = require('../helper/argHelper');
 const { getConnection } = require('../helper/sqlConnection');
 
-module.exports = { createTable, dropTable, create, find, findOne, remove, update };
+module.exports = { createTable, dropTable, create, createMany, find, findOne, remove, update };
 
 async function createTable({ drop=false }={}) {
 	const connection = await getConnection();
@@ -12,9 +12,9 @@ async function createTable({ drop=false }={}) {
 			title varchar(255) not null,
 			displayOrder int,
 			parentForumId int,
-    		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    		createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP/*,
     		FOREIGN KEY (createdBy)
-    			REFERENCES users (username)
+    			REFERENCES users (username)*/
 		);
 	`;
 	const result = await connection.execute(sql);
@@ -37,6 +37,17 @@ async function create({ createdBy, title, displayOrder, parentForumId }={}) {
 	const values = [ createdBy, title, displayOrder, parentForumId ];
 	const result = await connection.execute(sql, values);
 	return result;
+}
+
+async function createMany(rows, options={}) {
+	console.warn('Forum > createMany > not currently validating input. Good luck!');
+	const connection = await getConnection();
+	const sql = `INSERT INTO forums(forumId, createdBy, title, displayOrder, parentForumId) VALUES ?`;
+	const values = rows.map(row => [
+		row.forumId, row.createdBy, row.title, row.displayOrder, row.parentForumId
+	]);
+	const result = await connection.query(sql, [values]);
+	return result[0].affectedRows;
 }
 
 async function find(query={}) {

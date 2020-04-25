@@ -13,8 +13,8 @@ router.get('/', async (req, res) => {
 	res.send(threads);
 });
 router.get('/:threadId', async (req, res) => {
-	const args = { threadId:req.params.threadId };
-	const thread = await Thread.findOne(args)
+	const query = { threadId:req.params.threadId };
+	const thread = await Thread.findOne({ query })
 	res.send(thread);
 });
 

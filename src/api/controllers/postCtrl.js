@@ -10,8 +10,8 @@ router.get('/', async (req, res) => {
 	res.send(posts);
 });
 router.get('/:postId', async (req, res) => {
-	const args = { postId:req.params.postId };
-	const post = await Post.findOne(args)
+	const query = { postId:req.params.postId };
+	const post = await Post.findOne({ query })
 	res.send(post);
 });
 

@@ -13,7 +13,7 @@ export default function ForumDetail(props) {
 	const { threads=[] } = forum;
 
 	return <div id="forum">
-		<h2>{forum.title}</h2>
+		{/*<h2>{forum.title}</h2>*/}
 
 		<div className="child-forums-list">
 			<ForumList forums={forum.childForums} />

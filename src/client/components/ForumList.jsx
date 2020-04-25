@@ -1,3 +1,4 @@
+import Breadcrumb from './Breadcrumb';
 import DateDisplay from './DateDisplay';
 import React from 'react';
 
@@ -14,7 +15,6 @@ export default function ForumList(props) {
 
 	const sortedForums = sortByScore(forums, forum => (forum.pidTree||'').split(','))
 	return <div id="forum-list">
-		ForumList:
 		{sortedForums
 			.map(forum => <Link to={`/forum/${forum.forumId}`} key={forum.forumId}>
 				<div className="forum" depth={forum.depth}>
@@ -64,6 +64,14 @@ export class ForumListLoader extends React.Component {
 	render() {
 		const { forums, loading } = this.state;
 		if (loading) return <TempLoadingIndicator />;
-		else return <ForumList forums={forums} />
+
+		const breadcrumbs = [
+			{ label:'Home', href:"/" },
+		];
+
+		return <div>
+			<Breadcrumb breadcrumbs={breadcrumbs} />
+			<ForumList forums={forums} />
+		</div>
 	}
 }

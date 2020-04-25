@@ -1,3 +1,4 @@
+import Breadcrumb from './Breadcrumb';
 import LoadingIndicator from './LoadingIndicator';
 import React from 'react';
 import ThreadDetail from './ThreadDetail';
@@ -30,6 +31,16 @@ export default class ThreadDetailLoader extends React.Component {
 		const { forum, thread, loading } = this.state;
 
 		if (loading) return <LoadingIndicator />;
-		else return <ThreadDetail forum={forum} thread={thread} />
+
+		const breadcrumbs = [
+			{ label:'Home', href:'/' },
+			{ label:forum.title, href:`/forum/${forum.forumId}` },
+			{ label:thread.title, href:`/forum/${forum.forumId}/thread/${thread.threadId}` },
+		];
+
+		return <div>
+			<Breadcrumb breadcrumbs={breadcrumbs} />
+			<ThreadDetail forum={forum} thread={thread} />
+		</div>
 	}
 }

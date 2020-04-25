@@ -1,3 +1,4 @@
+import Breadcrumb from './Breadcrumb';
 import ForumDetail from './ForumDetail';
 import React from 'react';
 
@@ -42,6 +43,15 @@ export default class ForumLoader extends React.Component {
 	render() {
 		const { forum, loading } = this.state;
 		if (loading) return <TempLoadingIndicator />;
-		else return <ForumDetail key={forum.forumId} forum={forum} />
+
+		const breadcrumbs = [
+			{ label:'Home', href:'/' },
+			{ label:forum.title, href:`/forum/${forum.forumId}` },
+		];
+
+		return <div>
+			<Breadcrumb breadcrumbs={breadcrumbs} />
+			<ForumDetail key={forum.forumId} forum={forum} />
+		</div>
 	}
 }

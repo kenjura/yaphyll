@@ -21,7 +21,7 @@ const Thread = () => <h2>Thread Detail Page</h2>;
 const AppRouter = () => (
   <Router>
     <div id="router-child">
-		<Route component={NavMain} />
+		{/*<Route component={NavMain} />*/}
 
 		<Route path="/" exact component={ForumListLoader} />
 		<Route exact path="/forum/:forumId" render={props => <ForumDetailLoader key={props.match.params.forumId+'-'+props.location.search } {...props} />} />

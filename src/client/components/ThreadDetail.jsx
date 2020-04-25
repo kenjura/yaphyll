@@ -16,10 +16,9 @@ export default function ThreadDetail(props) {
 	} = thread;
 
 	return <div className="thread-detail">
-		<header className="thread-header">
+		{/*<header className="thread-header">
 			<div className="title">{forum.title} > {title}</div>
-			{/*<div className="byline">{createdBy}, <DateDisplay date={createdAt} /></div>*/}
-		</header>
+		</header>*/}
 		<div className="posts">
 			{ posts.map(post => <PostDetail key={post.postId} {...post} />) }
 			<NewPostLoader threadId={thread.threadId} />

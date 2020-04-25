@@ -1,0 +1,20 @@
+.breadcrumb {
+	background-color: var(--rootBg);
+    height: 30px;
+    line-height: 30px;
+    padding: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 150;
+
+	.breadcrumb-item {
+		font-size: 150%;
+		display: inline-block;
+		margin-right: 20px;
+		border-right: 1px solid white;
+		padding-right: 20px;
+	}
+	.breadcrumb-item:last-of-type {
+		border-right: none;
+	}
+}

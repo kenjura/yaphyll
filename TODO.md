@@ -1,7 +1,17 @@
+# Beta
++ [ ] Users can create new posts
++ [ ] Users can create new threads
++ [ ] System tracks when users last accessed site
++ [ ] System tracks which posts users have seen
+
+# Beta 2
++ [ ] Notifications (using web API)
++ [ ] PWA
+
 # Bugs
 + [ ] Invalid date in threadlink
 + [ ] restore requiresAuth to api calls (or just use an /api vs /api/public schema)
-+ [ ] sort doesn't work (crud/queryBuilder) (blame prepared statements)
++ [x] sort doesn't work (crud/queryBuilder) (blame prepared statements)
 
 # SQL
 + [ ] use connection pooling

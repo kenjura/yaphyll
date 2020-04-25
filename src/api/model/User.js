@@ -1,66 +1,62 @@
+const crud = require('../helper/crud');
+const SqlString = require('sqlstring');
+
 const { getConnection } = require('../helper/sqlConnection');
+const { getWhere } = require('../helper/queryBuilder');
 
-module.exports = { createTable, dropTable, create, createMany, find, remove, update };
+module.exports = { createTable, dropTable,  find, findOne, insert, remove, update };
 
-async function createTable({ drop=false }={}) {
-	const connection = await getConnection();
-	const sql = `
-		CREATE TABLE users(
-			username varchar(255) primary key,
-			email varchar(255) not null,
-    		createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-		);
-	`;
-	const result = await connection.execute(sql);
-	return result;
+const schema = {
+	tableName: 'users',
+	fields: [
+		{ name:'username', type:'varchar(255)', required:true, primaryKey:true },
+		{ name:'email', type:'varchar(255)', required:true },
+		{ name:'createdAt', type:'timestamp', default:'CURRENT_TIMESTAMP' },
+		{ name:'lastVisited', type:'timestamp' },
+	],
+};
+
+async function createTable() {
+	return await crud.createTable({ schema });
 }
 async function dropTable({ confirm }={}) {
-	if (confirm !== 'users') throw new Error('User > dropTable > to call this function, you must pass a confirmation string.');
-	const connection = await getConnection();
-	return await connection.execute('DROP TABLE IF EXISTS users;');
+	return await crud.dropTable({ confirm, schema });
 }
-
-async function create({ username, email }={}) {
-	if (!username) throw new Error('User > create > required field username is not present');
-	if (!email) throw new Error('User > create > required field email is not present');
-	const connection = await getConnection();
-	const sql = `
-		INSERT INTO users(username, email)
-		VALUES(?, ?);
-	`;
-	const values = [ username, email ];
-	const result = await connection.execute(sql, values);
-	return result;
+async function find({ query }={}) {
+	return await crud.find({ query, schema });
 }
-
-async function createMany(rows) {
-	console.warn('User > createMany > not currently validating input. Good luck!');
-	const connection = await getConnection();
-	const sql = `INSERT INTO users(username, email, createdAt) VALUES ?`;
-	const values = rows.map(row => [
-		row.username, row.email, row.createdAt
-	]);
-	console.log(values);
-	const result = await connection.query(sql, [values]);
-	return result[0].affectedRows;
+async function findOne({ query }={}) {
+	return (await crud.find({ query, schema }))[0];
 }
-
-async function find({ username }={}) {
-	console.warn('User > find > not fully implemented!');
-	const connection = await getConnection();
-	const sql = `
-		SELECT * FROM users
-		WHERE username = ?;
-	`;
-	const values = [ username ];
-	const result = await connection.execute(sql, values);
-	return result;
+async function insert({ rows }={}) {
+	return await crud.find({ rows, schema });
 }
 
 async function remove() {
 	console.warn('User > remove > not implemented!');
 }
 
-async function update() {
-	console.warn('User > update > not implemented!');
+async function update({ query, row }={}) {
+	debugger;
+	const where = getWhere({ query });
+	const setFields = getSetFields(row);
+	const sql = `
+		UPDATE users
+		SET ${setFields.sql}
+		${where.sql}
+	`;
+	const val = [ ...setFields.val, ...where.val ];
+	const connection = await getConnection();
+	console.log({ where:'User > update', sql, val });
+	const result = await connection.execute(sql, val);
+	return result[0].affectedRows;
+
+	function getSetFields(row) {
+		const fields = Object.keys(row);
+		const values = Object.values(row);
+		return {
+			sql: fields.map(f => `${f} = ?`).join(', '),
+			val: values,
+		}
+	}
 }

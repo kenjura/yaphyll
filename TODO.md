@@ -1,7 +1,7 @@
 # Beta
 + [ ] Users can create new posts
 + [ ] Users can create new threads
-+ [ ] System tracks when users last accessed site
++ [x] System tracks when users last accessed site
 + [ ] System tracks which posts users have seen
 
 # Beta 2

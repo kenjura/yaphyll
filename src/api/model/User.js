@@ -37,7 +37,6 @@ async function remove() {
 }
 
 async function update({ query, row }={}) {
-	debugger;
 	const where = getWhere({ query });
 	const setFields = getSetFields(row);
 	const sql = `
